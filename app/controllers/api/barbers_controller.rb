@@ -1,6 +1,7 @@
 class Api::BarbersController < ApplicationController
+  skip_before_action :authorized, only: [:create]
   before_action :set_barber, only: [:show, :update, :destroy]
-
+  
   # GET /barbers
   def index
     @barbers = Barber.all
@@ -16,8 +17,9 @@ class Api::BarbersController < ApplicationController
   # POST /barbers
   def create
      @barber = Barber.create!(barber_params)
-    if @barber
-      render json: @barber, status: :created
+    if @barber.valid?
+      @token = encode_token(barber_id: @barber.id)
+      render json: { barber: Barber.new(@barber), jwt: @token }, status: :created
     else
       render json: @barber.errors, status: :unprocessable_entity
     end
@@ -45,6 +47,6 @@ class Api::BarbersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def barber_params
-      params.permit(:name, :email, :password, :image_url, :bio)
+      params.permit(:name, :email, :password, :bio)
     end
 end
