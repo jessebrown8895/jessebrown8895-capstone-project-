@@ -4,7 +4,6 @@ class Api::CustomersController < ApplicationController
   # GET /customers
   def index
     @customers = Customer.all
-
     render json: @customers
   end
 
@@ -15,10 +14,10 @@ class Api::CustomersController < ApplicationController
 
   # POST /customers
   def create
-    @customer = Customer.new(customer_params)
-
-    if @customer.save
-      render json: @customer, status: :created, location: @customer
+     @customer = Customer.create!(customer_params)
+    if @customer.valid?
+      @token = encode_token(customer: @customer.id)
+      render json: { customer: CustomerSerializer.new(@customer), jwt: @token }, status: :created
     else
       render json: @customer.errors, status: :unprocessable_entity
     end
