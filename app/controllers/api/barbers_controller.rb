@@ -1,6 +1,6 @@
 class Api::BarbersController < ApplicationController
   skip_before_action :authorized, only: [:create]
-  
+
   before_action :set_barber, only: [:show, :update, :destroy]
   
   # GET /barbers
@@ -18,12 +18,8 @@ class Api::BarbersController < ApplicationController
   # POST /barbers
   def create
      @barber = Barber.create!(barber_params)
-    if @barber.valid?
       @token = encode_token(barber_id: @barber.id)
       render json: { barber: BarberSerializer.new(@barber), jwt: @token }, status: :created
-    else
-      render json: @barber.errors, status: :unprocessable_entity
-    end
   end
 
   # PATCH/PUT /barbers/1

@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 2022_06_19_231415) do
   create_table "customers", force: :cascade do |t|
     t.string "name"
     t.string "email"
+    t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -69,5 +70,4 @@ ActiveRecord::Schema.define(version: 2022_06_19_231415) do
   add_foreign_key "appointments", "barbers"
   add_foreign_key "product_purchases", "products"
   add_foreign_key "product_purchases", "purchases"
-  add_foreign_key "purchases", "appointments"
 end

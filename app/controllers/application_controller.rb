@@ -1,5 +1,11 @@
-class ApplicationController < ActionController::API
-    before_action :authorized 
+class ApplicationController < ActionController::API 
+    include ActionController::Cookies 
+    rescue_from ActiveRecord::RecordNotFound, with: :no_route 
+    rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
+    before_action :authorized
+    wrap_parameters format: []
+
+    private 
 
     def encode_token(payload)
         JWT.encode(payload, 'my_l!l_secr3t')
@@ -36,5 +42,13 @@ class ApplicationController < ActionController::API
   def authorized
     render json: { message: 'Please log in' }, status: :unauthorized unless logged_in?
   end
+
+  def render_unprocessable_entity_response(exception)
+    render json: { error: exception.record.errors.full_messages.to_sentence }, status: :unprocessable_entity
+  end
+
+  def no_route
+    render json: { error: "Resource not found"}, status: :unauthorized 
+  end 
 
 end

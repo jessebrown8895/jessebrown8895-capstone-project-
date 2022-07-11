@@ -7,9 +7,9 @@ require 'faker'
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 puts "seeding"
-jesse = Barber.create(name: "Jesse", email: "jdb@yahoo.com", password: "test", bio: "I have cut hair for 21 years")
-tim = Barber.create(name: "Tim", email: "tim@yahoo.com", password: "test", bio: "Been cutting hair longer than Jesse")
-jason = Customer.create(name: "jason", email: "jason@yahoo.com")
+jesse = Barber.create(name: "Jesse", email: "jdb@yahoo.com", password: "test12345", bio: "I have cut hair for 21 years")
+tim = Barber.create(name: "Tim", email: "tim@yahoo.com", password: "test123456", bio: "Been cutting hair longer than Jesse")
+jason = Customer.create(name: "jason", email: "jason@yahoo.com", password: "something")
 
 10.times do 
     Product.create(
@@ -21,14 +21,14 @@ end
 Appointment.create(
     appointment_time: DateTime.current,
     barber: jesse,
-    customer_id: jason.email
+    customer: jason
 )
 
 5.times do 
 Appointment.create(
     appointment_time: Faker::Time.between(from: DateTime.now - 1, to: DateTime.now, format: :default),
     barber: jesse,
-    customer_id: jason.email
+    customer: jason
     
 )
 end 
