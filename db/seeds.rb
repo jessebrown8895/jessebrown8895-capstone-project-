@@ -20,14 +20,14 @@ end
 
 Appointment.create(
     appointment_time: DateTime.current,
-    barber: jesse,
+    barber_id: jesse.id,
     customer: jason
 )
 
 5.times do 
 Appointment.create(
     appointment_time: Faker::Time.between(from: DateTime.now - 1, to: DateTime.now, format: :default),
-    barber: jesse,
+    barber_id: jesse.id,
     customer: jason
     
 )
