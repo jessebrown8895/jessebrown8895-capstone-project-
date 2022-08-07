@@ -5,5 +5,5 @@ class Customer < ApplicationRecord
 
     validates :name, presence: true, length: {in: 3..15}
     validates :email, presence: true, uniqueness: true, format: {with: /\A(?<username>[^@\s]+)@((?<domain_name>[-a-z0-9]+)\.(?<domain>[a-z]{2,}))\z/i}
-    validates :password, length: {in: 5..20}
+    validates :password, presence: true, length: {in: 5..20}
 end

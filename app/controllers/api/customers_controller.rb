@@ -1,6 +1,8 @@
 class Api::CustomersController < ApplicationController
-  before_action :set_customer, only: [:show, :update, :destroy]
-
+  require "byebug"
+  skip_before_action :authorized, only: [:create]
+  before_action :set_customer, only: [:show, :update, :destroy ]
+ 
   # GET /customers
   def index
     @customers = Customer.all
@@ -14,7 +16,9 @@ class Api::CustomersController < ApplicationController
 
   # POST /customers
   def create
+    
      @customer = Customer.create!(customer_params)
+     
     if @customer.valid?
       @token = encode_token(customer: @customer.id)
       render json: { customer: CustomerSerializer.new(@customer), jwt: @token }, status: :created
@@ -33,9 +37,7 @@ class Api::CustomersController < ApplicationController
   end
 
   # DELETE /customers/1
-  def destroy
-    @customer.destroy
-  end
+  
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -45,6 +47,6 @@ class Api::CustomersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def customer_params
-      params.require(:customer).permit(:name, :email)
+      params.permit(:name, :email, :password)
     end
 end

@@ -8,7 +8,7 @@ class ApplicationController < ActionController::API
     private 
 
     def encode_token(payload)
-        JWT.encode(payload, 'my_l!l_secr3t')
+        JWT.encode(payload, 'my_s3cr3t')
     end 
 
     def auth_header 
